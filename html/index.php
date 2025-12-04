@@ -6,19 +6,6 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/checkaccess.php");
 
 // Retrieve Settings and Functions
 include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
-
-// Retrieve and Perform Actions
-if (isset($_REQUEST["action"])) {
-    $action = $_REQUEST["action"];
-  } else {
-    $action = "";
-}
-
-if (isset($userpkid)) {
-    if ($userpkid <> "") {
-        header("Location: /people/", true, 302);
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,22 +36,19 @@ if (isset($userpkid)) {
         <div class="km-title">
             <?php echo ($sitetitle); ?>
         </div>
-        <div class="km-avatar">
-            <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/avatar.php"; ?>
-        </div>
-        <div class="km-menu">
-            <?php if ($userpkid != "") {
-                include $_SERVER['DOCUMENT_ROOT'] . "/includes/menu.php";
-            }?>
-        </div>
         <div class="km-body" style="width: 800px">
-          <a href="<?php echo ($oauth_url); ?>">
-            <img width="400" src="/images/signin.png" alt="Sign In with Webex" />
-          </a>
-        </div>
+            <?php
+            if ($loggedin) {
+            } else {
+                echo ("            <a href=\"" . $oauth_url . "\">\n");
+                echo ("                <img width=\"400\" src=\"/images/signin.png\" alt=\"Sign In with Webex\" />\n");
+                echo ("            </a>\n");
+            }
+            ?> </div>
         <div class="km-footer">
             <?php include $_SERVER['DOCUMENT_ROOT'] . "/includes/footer.php"; ?>
         </div>
     </div>
 </body>
+
 </html>
