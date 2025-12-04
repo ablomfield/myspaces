@@ -101,7 +101,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                             $roomcreated = date_create($getroomsarr->items[$roomindex]->created);
                             if ($roomcreated < $oldestdate) {
                                 $oldestdate = $roomcreated;
-                                $oldesttile = $roomtitle;
+                                $oldesttitle = $roomtitle;
                             } elseif ($roomcreated > $newestdate) {
                                 $newestdate = $roomcreated;
                                 $newesttitle = $roomtitle;
