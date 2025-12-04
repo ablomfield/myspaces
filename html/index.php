@@ -128,8 +128,20 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                     flush();
                 }
                 echo ("<p><b>You are in " . number_format($spacecount) . " spaces!</b><br>\n");
-                echo ("<p>1:1 Spaces: " . number_format($directcount) . "<br>\n");
-                echo ("<p>Group Spaces: " . number_format($groupcount) . "<br></p>\n");
+                echo ("<table>\n");
+                echo ("  <tr>\n");
+                echo ("    <td>1:1 Spaces</td>\n");
+                echo ("    <td>" . number_format($directcount) . "</td>\n");
+                echo ("  </tr>\n");
+                echo ("  <tr>\n");
+                echo ("    <td>Group Spaces</td>\n");
+                echo ("    <td>" . number_format($groupcount) . "</td>\n");
+                echo ("  </tr>\n");
+                echo ("  <tr>\n");
+                echo ("    <td bgcolor=\"silver\">Total Spaces</td>\n");
+                echo ("    <td bgcolor=\"silver\">" . number_format($spacecount) . "</td>\n");
+                echo ("  </tr>\n");
+                echo ("</table>\n");
                 echo ("<p>The oldest space is \"$oldesttitle\" (Created " . date_format($oldestdate, 'M jS Y') . ").</p>\n");
                 echo ("<p>The newest space is \"$newesttitle\" (Created " . date_format($newestdate, 'M jS Y') . ").</p>\n");
             } else {
