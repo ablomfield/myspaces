@@ -114,7 +114,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                     }
                     flush();
                 }
-                echo ("<p>You are in $spacecount spaces!</p>\n");
+                echo ("<p>You are in " . number_format($spacecount) . " spaces!</p>\n");
                 echo ("<p>The oldest space is \"$oldesttitle\" (Created " . date_format($oldestdate, 'M jS Y') . ").</p>\n");
                 echo ("<p>The newest space is \"$newesttitle\" (Created " . date_format($newestdate, 'M jS Y') . ").</p>\n");
             } else {
