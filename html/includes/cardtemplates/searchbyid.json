@@ -1,0 +1,42 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Search by Organization ID...",
+            "wrap": true,
+            "fontType": "Default",
+            "size": "Large",
+            "weight": "Bolder",
+            "color": "Accent",
+            "isSubtle": true
+        },
+        {
+            "type": "Input.Text",
+            "isVisible": false,
+            "id": "cardtype",
+            "value": "searchbyid"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Organization ID",
+            "id": "searchterm",
+            "label": "Organization ID:",
+            "isRequired": true,
+            "errorMessage": "You must enter an Organization ID to search!"
+        },
+        {
+            "type": "ActionSet",
+            "actions": [
+                {
+                    "type": "Action.Submit",
+                    "title": "Search",
+                    "associatedInputs": "auto"
+                }
+            ]
+        }
+    ],
+    "verticalContentAlignment": "Top"
+}

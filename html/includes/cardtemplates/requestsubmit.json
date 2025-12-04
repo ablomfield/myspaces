@@ -1,0 +1,90 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Request Access",
+            "wrap": true,
+            "fontType": "Default",
+            "size": "Large",
+            "weight": "Bolder",
+            "color": "Accent",
+            "isSubtle": true
+        },
+        {
+            "type": "Input.Text",
+            "isVisible": false,
+            "id": "cardtype",
+            "value": "requestsubmit"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "isVisible": false,
+            "id": "orgid",
+            "value": "{{orgid}}"
+        },
+        {
+            "type": "TextBlock",
+            "text": "You are requesting access to:",
+            "wrap": true,
+            "fontType": "Default",
+            "size": "Medium",
+            "color": "Accent"
+        },
+        {
+            "type": "TextBlock",
+            "text": "{{orgname}}",
+            "wrap": true,
+            "color": "Light",
+            "size": "Medium"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Submitting this form will send an authorization request to {{authorizer}}.",
+            "wrap": true
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "Continue",
+                                    "associatedInputs": "auto"
+                                }
+                            ]
+                        }
+                    ],
+                    "horizontalAlignment": "Center"
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "Cancel",
+                                    "associatedInputs": "none"
+                                }
+                            ]
+                        }
+                    ],
+                    "horizontalAlignment": "Center"
+                }
+            ]
+        }
+    ],
+    "verticalContentAlignment": "Top"
+}

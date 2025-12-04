@@ -1,0 +1,43 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Access {{result}}",
+            "wrap": true,
+            "fontType": "Default",
+            "size": "Large",
+            "weight": "Bolder",
+            "color": "{{headercolor}}",
+            "isSubtle": true
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "isVisible": false,
+            "id": "cardtype",
+            "value": "requestconfirm"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Your request for access to {{orgname}} was {{result}} by {{approver}}.",
+            "wrap": true,
+            "fontType": "Default",
+            "size": "Default",
+            "color": "Default"
+        },
+        {
+            "type": "ActionSet",
+            "actions": [
+                {
+                    "type": "Action.Submit",
+                    "title": "Close",
+                    "associatedInputs": "none"
+                }
+            ]
+        }
+    ],
+    "verticalContentAlignment": "Top"
+}

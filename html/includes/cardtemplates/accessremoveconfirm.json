@@ -1,0 +1,79 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Confirm remove access...",
+            "wrap": true,
+            "fontType": "Default",
+            "size": "Large",
+            "weight": "Bolder",
+            "color": "Warning",
+            "isSubtle": true
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "isVisible": false,
+            "id": "cardtype",
+            "value": "accessremoveconfirm"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "isVisible": false,
+            "value": "{{orgid}}",
+            "id": "orgid"
+        },
+        {
+            "type": "TextBlock",
+            "text": "You are requesting to remove access to {{orgname}}. Please confirm or cancel.",
+            "wrap": true,
+            "fontType": "Default",
+            "size": "Default",
+            "color": "Default"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "Confirm",
+                                    "associatedInputs": "auto"
+                                }
+                            ]
+                        }
+                    ],
+                    "horizontalAlignment": "Center"
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.Submit",
+                                    "title": "Cancel",
+                                    "associatedInputs": "none"
+                                }
+                            ]
+                        }
+                    ],
+                    "horizontalAlignment": "Center"
+                }
+            ]
+        }
+    ],
+    "verticalContentAlignment": "Top"
+}
