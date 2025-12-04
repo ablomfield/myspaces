@@ -72,7 +72,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                         }
                     }
                     if (isset($headersarr['link'])) {
-                        $getroomsurl = substr(substr($headersarr['link'], 0, strpos($headersarr['link'], ";") - 1), 1, 100);
+                        $getroomsurl = substr(substr($headersarr['link'], 0, strpos($headersarr['link'], ";") - 1), 1, 1000);
                         $relurl = substr($headersarr['link'], strpos($headersarr['link'], ";") + 2);
                     } else {
                         $relurl = "none";
