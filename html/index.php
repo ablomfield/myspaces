@@ -98,7 +98,14 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                             $roomtitle = "";
                         }
                         if (isset($getroomsarr->items[$roomindex]->created)) {
-                            $roomcreated = date_format(date_create($getroomsarr->items[$roomindex]->created), 'Y-m-d H:i:s');
+                            $roomcreated = date_create($getroomsarr->items[$roomindex]->created);
+                            if ($roomcreated < $oldestdate) {
+                                $oldestdate = $roomcreated;
+                                $oldesttile = $roomtitle;
+                            } elseif ($roomcreated > $newestdate) {
+                                $newestdate = $roomcreated;
+                                $newesttitle = $roomtitle;
+                            }
                         } else {
                             $roomcreated = NULL;
                         }
@@ -107,6 +114,8 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                     flush();
                 }
                 echo ("<p>You are in $spacecount spaces!</p>\n");
+                echo ("<p>The oldest space is $oldesttitle.</p>\n");
+                echo ("<p>The newest space is $newesttitle.</p>\n");
             } else {
                 echo ("            <a href=\"" . $oauth_url . "\">\n");
                 echo ("                <img width=\"400\" src=\"/images/signin.png\" alt=\"Sign In with Webex\" />\n");
