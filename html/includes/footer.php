@@ -1,2 +1,2 @@
-Copyright <a href="/session" style="text-decoration: none;">&copy;</a> 2022 - <?php echo (date('Y')); ?> <a href="mailto:ablomfield@presidio.com" style="text-decoration: none;">Adam Blomfield</a><br>
+Copyright <a href="/session" style="text-decoration: none;">&copy;</a> <?php echo (date('Y')); ?> <a href="mailto:ablomfield@presidio.com" style="text-decoration: none;">Adam Blomfield</a><br>
 All rights reserved.
