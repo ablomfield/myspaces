@@ -39,10 +39,12 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
         <div class="km-body" style="width: 800px">
             <?php
             if ($loggedin) {
-                echo ("<h1>Hello $displayname!</h1>\n");
+                echo ("<h1>Hello, $displayname!</h1>\n");
                 $recmax = 1000;
                 $relurl = "rel=\"next\"";
                 $spacecount = 0;
+                $groupcount = 0;
+                $directcount = 0;
                 $getroomsurl = "https://webexapis.com/v1/rooms?max=" . strval($recmax);
                 $oldestdate = new DateTime();
                 $oldesttile = "";
@@ -110,11 +112,24 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                         } else {
                             $roomcreated = NULL;
                         }
+                        if (isset($getroomsarr->items[$roomindex]->type)) {
+                            $roomtype = $getroomsarr->items[$roomindex]->type;
+                            if ($roomtype == "group") {
+                                ++$groupcount;
+                            }
+                            if ($roomtype == "direct") {
+                                ++$directcount;
+                            }
+                        } else {
+                            $roomcreated = NULL;
+                        }
                         ++$spacecount;
                     }
                     flush();
                 }
-                echo ("<p>You are in " . number_format($spacecount) . " spaces!</p>\n");
+                echo ("<p><b>You are in " . number_format($spacecount) . " spaces!</b><br>\n");
+                echo ("<p>1:1 Spaces: " . number_format($directcount) . "<br>\n");
+                echo ("<p>Group Spaces: " . number_format($groupcount) . "<br></p>\n");
                 echo ("<p>The oldest space is \"$oldesttitle\" (Created " . date_format($oldestdate, 'M jS Y') . ").</p>\n");
                 echo ("<p>The newest space is \"$newesttitle\" (Created " . date_format($newestdate, 'M jS Y') . ").</p>\n");
             } else {
