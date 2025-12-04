@@ -40,6 +40,69 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
             <?php
             if ($loggedin) {
                 echo ("<h1>Hello $displayname!</h1>\n");
+                $recmax = 1000;
+                $relurl = "rel=\"next\"";
+                $spacecount = 1;
+                $getroomsurl = "https://webexapis.com/v1/rooms?max=" . strval($recmax);
+                $loopcount = 1;
+                while ($relurl == "rel=\"next\"" && $loopcount < 100) {
+                    ++$loopcount;
+                    $chgetrooms = curl_init();
+                    curl_setopt($chgetrooms, CURLOPT_URL, $getroomsurl);
+                    curl_setopt($chgetrooms, CURLOPT_CUSTOMREQUEST, "GET");
+                    curl_setopt($chgetrooms, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($chgetrooms, CURLOPT_HEADER, 1);
+                    curl_setopt(
+                        $chgetrooms,
+                        CURLOPT_HTTPHEADER,
+                        array(
+                            'Content-Type: application/json',
+                            'Accept: */*',
+                            'Connection: keep-alive',
+                            'Authorization: Bearer ' . $admintoken
+                        )
+                    );
+                    $getroomsresponse = curl_exec($chgetrooms);
+                    $header_size = curl_getinfo($chgetrooms, CURLINFO_HEADER_SIZE);
+                    $getroomsheader = substr($getroomsresponse, 0, $header_size);
+                    $headersarr = [];
+                    foreach (explode("\r\n", trim($getroomsheader)) as $row) {
+                        if (preg_match('/(.*?): (.*)/', $row, $matches)) {
+                            $headersarr[$matches[1]] = $matches[2];
+                        }
+                    }
+                    if (isset($headersarr['link'])) {
+                        $getroomsurl = substr(substr($headersarr['link'], 0, strpos($headersarr['link'], ";") - 1), 1, 100);
+                        $relurl = substr($headersarr['link'], strpos($headersarr['link'], ";") + 2);
+                    } else {
+                        $nexturl = "";
+                        $relurl = "none";
+                    }
+                    $getroomsjson = substr($getroomsresponse, $header_size);
+                    $getroomsarr = json_decode($getroomsjson);
+                    for ($roomindex = 0; $roomindex <= count($getroomsarr->items) - 1; $roomindex++) {
+                        if (isset($getroomsarr->items[$roomindex]->id)) {
+                            $roomid = $getroomsarr->items[$roomindex]->id;
+                        } else {
+                            $roomid = "";
+                        }
+                        if (isset($getroomsarr->items[$roomindex]->title)) {
+                            $roomtitle = $getroomsarr->items[$roomindex]->title;
+                            $roomtitle = str_replace("'", "\'", $roomtitle);
+                            $roomtitle = str_replace("\"", "\\\"", $roomtitle);
+                        } else {
+                            $roomtitle = "";
+                        }
+                        if (isset($getroomsarr->items[$roomindex]->created)) {
+                            $roomcreated = date_format(date_create($getroomsarr->items[$roomindex]->created), 'Y-m-d H:i:s');
+                        } else {
+                            $roomcreated = NULL;
+                        }
+                        ++$spacecount;
+                    }
+                    flush();
+                }
+                echo ("<p>You are in $spacecount spaces!</p>\n");
             } else {
                 echo ("            <a href=\"" . $oauth_url . "\">\n");
                 echo ("                <img width=\"400\" src=\"/images/signin.png\" alt=\"Sign In with Webex\" />\n");
