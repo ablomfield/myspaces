@@ -59,7 +59,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                             'Content-Type: application/json',
                             'Accept: */*',
                             'Connection: keep-alive',
-                            'Authorization: Bearer ' . $admintoken
+                            'Authorization: Bearer ' . $accesstoken
                         )
                     );
                     $getroomsresponse = curl_exec($chgetrooms);
