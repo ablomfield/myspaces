@@ -80,6 +80,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                     }
                     $getroomsjson = substr($getroomsresponse, $header_size);
                     $getroomsarr = json_decode($getroomsjson);
+                    print_r($getroomsarr);
                     for ($roomindex = 0; $roomindex <= count($getroomsarr->items) - 1; $roomindex++) {
                         if (isset($getroomsarr->items[$roomindex]->id)) {
                             $roomid = $getroomsarr->items[$roomindex]->id;
