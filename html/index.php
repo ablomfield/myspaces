@@ -80,7 +80,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                     }
                     $getroomsjson = substr($getroomsresponse, $header_size);
                     $getroomsarr = json_decode($getroomsjson);
-                    $itemcount = count($getroomsarr->items);
+                    $itemcount = count((array)$getroomsarr->items);
                     //$itemcount = 1000;
                     echo ("Retrieved " . $itemcount . " items.<br>\n");
                     //print_r($getroomsarr);
