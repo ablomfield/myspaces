@@ -42,7 +42,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                 echo ("<h1>Hello $displayname!</h1>\n");
                 $recmax = 1000;
                 $relurl = "rel=\"next\"";
-                $spacecount = 1;
+                $spacecount = 0;
                 $getroomsurl = "https://webexapis.com/v1/rooms?max=" . strval($recmax);
                 $oldestdate = new DateTime();
                 $oldesttile = "";
