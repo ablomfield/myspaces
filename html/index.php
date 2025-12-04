@@ -75,13 +75,13 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                         $getroomsurl = substr(substr($headersarr['link'], 0, strpos($headersarr['link'], ";") - 1), 1, 100);
                         $relurl = substr($headersarr['link'], strpos($headersarr['link'], ";") + 2);
                     } else {
-                        $nexturl = "";
                         $relurl = "none";
                     }
                     $getroomsjson = substr($getroomsresponse, $header_size);
                     $getroomsarr = json_decode($getroomsjson);
-                    print_r($getroomsarr);
-                    echo("<br><br>\n");
+                    //print_r($getroomsarr);
+                    echo("getroomsurl = " . $getroomsurl . "<br><br>\n");
+                    echo("relurl = " . $relurl . "<br><br>\n");
                     $itemcount = count((array)$getroomsarr->items);
                     //$itemcount = 1000;
                     echo ("Retrieved " . $itemcount . " items.<br>\n");
