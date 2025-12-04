@@ -115,8 +115,8 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                     flush();
                 }
                 echo ("<p>You are in $spacecount spaces!</p>\n");
-                echo ("<p>The oldest space is \"$oldesttitle\" (Created " . date_format($oldestdate, 'd-m-Y') . ").</p>\n");
-                echo ("<p>The newest space is \"$newesttitle\" (Created " . date_format($newestdate, 'd-m-Y') . ").</p>\n");
+                echo ("<p>The oldest space is \"$oldesttitle\" (Created " . date_format($oldestdate, 'M jS Y') . ").</p>\n");
+                echo ("<p>The newest space is \"$newesttitle\" (Created " . date_format($newestdate, 'M jS Y') . ").</p>\n");
             } else {
                 echo ("            <a href=\"" . $oauth_url . "\">\n");
                 echo ("                <img width=\"400\" src=\"/images/signin.png\" alt=\"Sign In with Webex\" />\n");
