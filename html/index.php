@@ -103,7 +103,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                                 $oldestdate = $roomcreated;
                                 $oldesttitle = $roomtitle;
                             }
-                            if ($newestdate > $roomcreated) {
+                            if ($newestdate < $roomcreated) {
                                 $newestdate = $roomcreated;
                                 $newesttitle = $roomtitle;
                             }
