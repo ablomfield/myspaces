@@ -1,0 +1,4 @@
+log/*
+settings.yaml
+.DS_Store
+html/webhook/webhook.txt
