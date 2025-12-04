@@ -13,7 +13,6 @@ if ($dbconn->connect_error) {
 }
 $rssettings = mysqli_query($dbconn, "SELECT * FROM settings") or die("Error in Selecting " . mysqli_error($dbconn));
 $rowsettings = mysqli_fetch_assoc($rssettings);
-$appversion = $rowsettings["appversion"];
 $sitetitle = $rowsettings["sitetitle"];
 $client_id = $rowsettings["client_id"];
 $client_secret = $rowsettings["client_secret"];
