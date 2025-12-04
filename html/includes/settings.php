@@ -19,16 +19,6 @@ $client_id = $rowsettings["client_id"];
 $client_secret = $rowsettings["client_secret"];
 $integration_id = $rowsettings["integration_id"];
 $oauth_url = $rowsettings["oauth_url"];
-$managerapproval = $rowsettings["managerapproval"];
-$bottoken = $rowsettings["bottoken"];
-$botpersonid  = $rowsettings["botpersonid"];
-$botlockdomain  = $rowsettings["botlockdomain"];
-$botapprovalroomid  = $rowsettings["botapprovalroomid"];
-$admintoken  = $rowsettings["admintoken"];
-$adminrefresh  = $rowsettings["adminrefresh"];
-$partneradminrole  = $rowsettings["partneradminrole"];
-$partnerroadminrole  = $rowsettings["partnerroadminrole"];
-$partnerfulladminrole  = $rowsettings["partnerfulladminrole"];
 
 // Set Debug
 if (isset($_SESSION["enabledebug"])) {
