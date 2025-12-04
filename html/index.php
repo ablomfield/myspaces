@@ -39,6 +39,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
         <div class="km-body" style="width: 800px">
             <?php
             if ($loggedin) {
+                echo ("<h1>Hello $displayname!</h1>\n");
             } else {
                 echo ("            <a href=\"" . $oauth_url . "\">\n");
                 echo ("                <img width=\"400\" src=\"/images/signin.png\" alt=\"Sign In with Webex\" />\n");
