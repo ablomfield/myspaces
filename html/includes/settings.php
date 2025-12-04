@@ -1,6 +1,6 @@
 <?php
 // Retrieve YAML Settings
-$yamlsettings = yaml_parse_file('/opt/keymaster/settings.yaml');
+$yamlsettings = yaml_parse_file('/opt/spaces/settings.yaml');
 $dbserver = $yamlsettings['Database']['ServerName'];
 $dbuser = $yamlsettings['Database']['Username'];
 $dbpass = $yamlsettings['Database']['Password'];
