@@ -44,6 +44,10 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                 $relurl = "rel=\"next\"";
                 $spacecount = 1;
                 $getroomsurl = "https://webexapis.com/v1/rooms?max=" . strval($recmax);
+                $oldestdate = new DateTime();
+                $oldesttile = "";
+                $newestdate = new DateTime('1900-01-01');
+                $newesttitle = "";
                 $loopcount = 1;
                 while ($relurl == "rel=\"next\"" && $loopcount < 100) {
                     ++$loopcount;
