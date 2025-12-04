@@ -1,1 +1,1 @@
-<a href="/"><img src="/images/keymaster.svg" height="60" alt="Keymaster Logo"></a>
+<a href="/"><img src="/images/spaces.png" height="60" alt="My Spaces Logo"></a>
