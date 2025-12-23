@@ -140,7 +140,7 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
                 echo ("</table>\n");
 
                 echo ("<p>The oldest space is \"{$oldestTitle}\" (Created " . date('M jS Y', $oldestTs) . ").</p>\n");
-                echo ("<p>The newest space is \"{$newestTitle}\" (Created {date('M jS Y', $newestTs)}).</p>\n");
+                echo ("<p>The newest space is \"{$newestTitle}\" (Created " . date('M jS Y', $newestTs) . ").</p>\n");
             } else {
                 echo ("            <a href=\"" . $oauth_url . "\">\n");
                 echo ("                <img width=\"400\" src=\"/images/signin.png\" alt=\"Sign In with Webex\" />\n");
