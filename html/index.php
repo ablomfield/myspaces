@@ -39,111 +39,108 @@ include($_SERVER['DOCUMENT_ROOT'] . "/includes/settings.php");
         <div class="km-body" style="width: 800px">
             <?php
             if ($loggedin) {
-                echo ("<h1>Hello, $displayname!</h1>\n");
-                $recmax = 1000;
-                $relurl = "rel=\"next\"";
-                $spacecount = 0;
-                $groupcount = 0;
+                echo "<h1>Hello, {$displayname}!</h1>\n";
+
+                $recmax       = 1000;
+                $getroomsurl = "https://webexapis.com/v1/rooms?max={$recmax}";
+                $spacecount  = 0;
+                $groupcount  = 0;
                 $directcount = 0;
-                $getroomsurl = "https://webexapis.com/v1/rooms?max=" . strval($recmax);
-                $oldestdate = new DateTime();
-                $oldesttile = "";
-                $newestdate = new DateTime('1900-01-01');
-                $newesttitle = "";
-                $loopcount = 1;
-                while ($relurl == "rel=\"next\"" && $loopcount < 100) {
-                    ++$loopcount;
-                    $chgetrooms = curl_init();
-                    curl_setopt($chgetrooms, CURLOPT_URL, $getroomsurl);
-                    curl_setopt($chgetrooms, CURLOPT_CUSTOMREQUEST, "GET");
-                    curl_setopt($chgetrooms, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($chgetrooms, CURLOPT_HEADER, 1);
-                    curl_setopt(
-                        $chgetrooms,
-                        CURLOPT_HTTPHEADER,
-                        array(
-                            'Content-Type: application/json',
-                            'Accept: */*',
-                            'Connection: keep-alive',
-                            'Authorization: Bearer ' . $accesstoken
-                        )
-                    );
-                    $getroomsresponse = curl_exec($chgetrooms);
-                    $header_size = curl_getinfo($chgetrooms, CURLINFO_HEADER_SIZE);
-                    $getroomsheader = substr($getroomsresponse, 0, $header_size);
-                    $headersarr = [];
-                    foreach (explode("\r\n", trim($getroomsheader)) as $row) {
-                        if (preg_match('/(.*?): (.*)/', $row, $matches)) {
-                            $headersarr[$matches[1]] = $matches[2];
+
+                $oldestTs    = PHP_INT_MAX;
+                $oldestTitle = "";
+                $newestTs    = 0;
+                $newestTitle = "";
+
+                $loopcount = 0;
+
+                /* ---------- Reusable cURL handle ---------- */
+                $ch = curl_init();
+                curl_setopt_array($ch, [
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HEADER         => true,
+                    CURLOPT_HTTPHEADER     => [
+                        'Content-Type: application/json',
+                        'Accept: */*',
+                        'Authorization: Bearer ' . $accesstoken
+                    ],
+                ]);
+
+                do {
+                    $loopcount++;
+                    curl_setopt($ch, CURLOPT_URL, $getroomsurl);
+
+                    $response = curl_exec($ch);
+                    if ($response === false) {
+                        break;
+                    }
+
+                    $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+                    $headers    = substr($response, 0, $headerSize);
+                    $body       = substr($response, $headerSize);
+
+                    /* ---------- Pagination handling ---------- */
+                    $nextUrl = null;
+                    foreach (explode("\r\n", $headers) as $line) {
+                        if (stripos($line, 'link:') === 0 && strpos($line, 'rel="next"') !== false) {
+                            preg_match('/<([^>]+)>/', $line, $m);
+                            $nextUrl = $m[1] ?? null;
+                            break;
                         }
                     }
-                    if (isset($headersarr['link'])) {
-                        $getroomsurl = substr(substr($headersarr['link'], 0, strpos($headersarr['link'], ";") - 1), 1, 1000);
-                        $relurl = substr($headersarr['link'], strpos($headersarr['link'], ";") + 2);
-                    } else {
-                        $relurl = "none";
+                    $getroomsurl = $nextUrl;
+
+                    $data = json_decode($body, true);
+                    if (empty($data['items'])) {
+                        break;
                     }
-                    $getroomsjson = substr($getroomsresponse, $header_size);
-                    $getroomsarr = json_decode($getroomsjson);
-                    $itemcount = count((array)$getroomsarr->items);
-                    for ($roomindex = 0; $roomindex <= $itemcount - 1; $roomindex++) {
-                        if (isset($getroomsarr->items[$roomindex]->id)) {
-                            $roomid = $getroomsarr->items[$roomindex]->id;
-                        } else {
-                            $roomid = "";
-                        }
-                        if (isset($getroomsarr->items[$roomindex]->title)) {
-                            $roomtitle = $getroomsarr->items[$roomindex]->title;
-                            $roomtitle = str_replace("'", "\'", $roomtitle);
-                            $roomtitle = str_replace("\"", "\\\"", $roomtitle);
-                        } else {
-                            $roomtitle = "";
-                        }
-                        if (isset($getroomsarr->items[$roomindex]->created)) {
-                            $roomcreated = date_create($getroomsarr->items[$roomindex]->created);
-                            if ($roomcreated < $oldestdate) {
-                                $oldestdate = $roomcreated;
-                                $oldesttitle = $roomtitle;
+
+                    foreach ($data['items'] as $room) {
+                        $spacecount++;
+
+                        if (!empty($room['type'])) {
+                            if ($room['type'] === 'group') {
+                                $groupcount++;
+                            } elseif ($room['type'] === 'direct') {
+                                $directcount++;
                             }
-                            if ($newestdate < $roomcreated) {
-                                $newestdate = $roomcreated;
-                                $newesttitle = $roomtitle;
-                            }
-                        } else {
-                            $roomcreated = NULL;
                         }
-                        if (isset($getroomsarr->items[$roomindex]->type)) {
-                            $roomtype = $getroomsarr->items[$roomindex]->type;
-                            if ($roomtype == "group") {
-                                ++$groupcount;
+
+                        if (!empty($room['created'])) {
+                            $ts = strtotime($room['created']);
+                            if ($ts < $oldestTs) {
+                                $oldestTs    = $ts;
+                                $oldestTitle = $room['title'] ?? '';
                             }
-                            if ($roomtype == "direct") {
-                                ++$directcount;
+                            if ($ts > $newestTs) {
+                                $newestTs    = $ts;
+                                $newestTitle = $room['title'] ?? '';
                             }
-                        } else {
-                            $roomcreated = NULL;
                         }
-                        ++$spacecount;
                     }
-                    flush();
-                }
-                echo ("<p><b>You are in " . number_format($spacecount) . " spaces!</b><br>\n");
+                } while ($getroomsurl && $loopcount < 100);
+
+                curl_close($ch);
+
+                /* ---------- Output (single echo) ---------- */
+                echo ("<p><b>You are in {$spacecount} spaces!</b></p>\n");
                 echo ("<table>\n");
                 echo ("  <tr>\n");
                 echo ("    <td align=\"right\"><i>1:1 Spaces</i></td>\n");
-                echo ("    <td align=\"center\">" . number_format($directcount) . "</td>\n");
+                echo ("    <td align=\"center\">{$directcount}</td>\n");
                 echo ("  </tr>\n");
                 echo ("  <tr>\n");
                 echo ("    <td align=\"right\"><i>Group Spaces</i></td>\n");
-                echo ("    <td align=\"center\">" . number_format($groupcount) . "</td>\n");
+                echo ("    <td align=\"center\">{$groupcount}</td>\n");
                 echo ("  </tr>\n");
                 echo ("  <tr>\n");
                 echo ("    <td align=\"right\"><i><b>Total Spaces</b></i></td>\n");
-                echo ("    <td align=\"center\"><b>" . number_format($spacecount) . "</b></td>\n");
+                echo ("    <td align=\"center\"><b>{$spacecount}</b></td>\n");
                 echo ("  </tr>\n");
                 echo ("</table>\n");
-                echo ("<p>The oldest space is \"$oldesttitle\" (Created " . date_format($oldestdate, 'M jS Y') . ").</p>\n");
-                echo ("<p>The newest space is \"$newesttitle\" (Created " . date_format($newestdate, 'M jS Y') . ").</p>\n");
+
+                echo ("<p>The oldest space is \"{$oldestTitle}\" (Created {date('M jS Y', $oldestTs)}).</p>\n");
+                echo ("<p>The newest space is \"{$newestTitle}\" (Created {date('M jS Y', $newestTs)}).</p>\n");
             } else {
                 echo ("            <a href=\"" . $oauth_url . "\">\n");
                 echo ("                <img width=\"400\" src=\"/images/signin.png\" alt=\"Sign In with Webex\" />\n");
